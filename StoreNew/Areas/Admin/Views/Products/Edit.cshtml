@@ -1,0 +1,246 @@
+﻿@model KAMStoreNew.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<style>
+
+    .ratings {
+        font-size: 30px;
+        font-weight: 600;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        color: #f9b43a
+    }
+
+    .user-details span {
+        text-align: left
+    }
+
+    .inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px
+    }
+
+    .inputs input {
+        font-size: 14px;
+        height: 40px;
+        border: 2px solid #ced4da;
+        padding-left: 10px;
+    }
+
+    .inputs select {
+        font-size: 14px;
+        height: 40px;
+        border: 2px solid #ced4da;
+        padding-left: 10px;
+    }
+
+    .inputs input:focus {
+        box-shadow: none;
+        border: 2px solid #09E0FA;
+    }
+
+    .inputs select:focus {
+        box-shadow: none;
+        border: 2px solid #09E0FA;
+    }
+
+    .about-inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px
+    }
+
+    .about-inputs textarea {
+        font-size: 14px;
+        height: 100px;
+        border: 2px solid #ced4da;
+        resize: none
+    }
+
+        .about-inputs textarea:focus {
+            box-shadow: none
+        }
+
+    .btn {
+        font-weight: 600
+    }
+
+        .btn:focus {
+            box-shadow: none
+        }
+</style>
+
+<div class="container mt-3">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                    <div class="row justify-content-center">
+                        <p class="text-center h1 fw-bold  mx-1 mx-md-4">Edit Product</p>
+
+                        <form action="/Admin/Products/Edit/@Model.ProductID" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ProductID" value="@Model.ProductID" />
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Product Name</label>
+                                        <input class="form-control" type="text" placeholder="Product Name" name="ProductName" value="@Model.ProductName" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Price</label>
+                                        <input class="form-control" type="text" placeholder="Price" name="Price" value="@Model.Price" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Created Date</label>
+                                        <input class="form-control" type="datetime" placeholder="Created Date" name="CreatedDate" value="@Model.CreatedDate" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Availability Status</label>
+                                        <select class="form-control" name="AvailabilityStatus">
+                                            <option value="">Please Select...</option>
+                                            @if (Model.AvailabilityStatus == "InStock")
+                                            {
+                                                <option value="InStock" selected>In Stock</option>
+                                                <option value="OutOfStock">Out Of Stock</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="InStock">In Stock</option>
+                                                <option value="OutOfStock" selected>Out Of Stock</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Category</label>
+                                        <select class="form-control" name="CategoryID" id="categorySelect">
+                                            <option value="">Please Select...</option>
+                                            @foreach (var item in ViewBag.Categories)
+                                            {
+                                                if (item.CategoryID == Model.CategoryID)
+                                                {
+                                                    <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.CategoryID">@item.CategoryName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Brand</label>
+                                        <select class="form-control" name="BrandID" id="brandSelect">
+                                            <option value="">Please Select...</option>
+                                            @foreach (var item in ViewBag.Brands)
+                                            {
+                                                if (item.CategoryID == Model.CategoryID)
+                                                {
+
+                                                    if (item.BrandID == Model.BrandID)
+                                                    {
+                                                        <option value="@item.BrandID" selected>@item.BrandName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.BrandID">@item.BrandName</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Image</label>
+                                        <input class="form-control" type="file" id="formFile" name="file">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mt-2">
+                                    <div class="image">
+                                        <img id="avatarImage" src="/Img/@Model.Img" class="img-fluid rounded-start max-width-200">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 gap-2 d-flex justify-content-end"> <button type="submit" class="px-3 btn btn-sm btn-secondary">Save</button> </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var selectedBrandID = @Model.BrandID;
+        $("#categorySelect").on("change", function () {
+            var categoryId = $(this).val();
+            var brandSelect = $("#brandSelect");
+
+            // Gửi yêu cầu AJAX để lấy danh sách thương hiệu dựa trên CategoryID
+            $.ajax({
+                type: 'GET',
+                url: `/api/brands?id=${categoryId}`,
+                success: function (data) {
+                    brandSelect.empty(); // Xóa tất cả các option hiện tại
+
+                    // Thêm option cho select Brand
+                    brandSelect.append('<option value="">Please Select...</option>');
+                    $.each(data, function (key, value) {
+                        if (value.BrandID == selectedBrandID) {
+                            brandSelect.append('<option value="' + value.BrandID + '"selected>' + value.BrandName + '</option>');
+                        }
+                        else {
+                            brandSelect.append('<option value="' + value.BrandID + '">' + value.BrandName + '</option>');
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    //====================================================
+    const fileInput = document.getElementById("formFile");
+    const avatarImage = document.getElementById("avatarImage");
+
+    fileInput.addEventListener("change", function () {
+        // Lấy tệp tin đã chọn
+        const selectedFile = fileInput.files[0];
+
+        // Kiểm tra xem đã chọn tệp tin chưa
+        if (selectedFile) {
+            // Tạo đường dẫn dựa trên tên tệp tin
+            const filePath = URL.createObjectURL(selectedFile);
+
+            // Đặt đường dẫn vào thuộc tính src của thẻ img
+            avatarImage.src = filePath;
+        } else {
+            // Nếu không có tệp tin được chọn, có thể đặt một ảnh mặc định
+            avatarImage.src = "/Img/avatar.jpg";
+        }
+    });
+</script>

@@ -1,0 +1,503 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <link href="~/CSS/custom_bootstrap.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/CSS/pagination.css" rel="stylesheet" />
+    <link rel="icon" href="~/Img/logoKAM.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="~/owlcarousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/owlcarousel/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/CSS/StyleSheet1.css" />
+    <link rel="stylesheet" href="~/CSS/StyleSheet2.css" />
+
+    <style>
+        .field-validation-error {
+            color: red;
+        }
+
+        .validation-summary-errors ul {
+            color: red;
+            list-style: none;
+            margin-left: 8px;
+        }
+
+        li.shopping {
+            position: relative;
+        }
+
+        span.quantity {
+            background-color: #09E0FA;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            position: absolute;
+            top: -6px;
+            left: 21px;
+            padding: 0px 8px;
+        }
+
+        .box-searchauto {
+            max-height: 400px; /* Đặt giá trị tùy chọn cho chiều cao tối đa */
+            overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao tối đa */
+        }
+
+            .box-searchauto a {
+                text-decoration: none;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div id="toast"></div>
+
+    <div class="container-fluid box-2">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center" href="/Home/Index"><img src="~/Img/logoKAM2.svg" style="width:30px" /><strong>GEAR</strong></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
+                        <div class="input-group">
+                            <span class="border-warning input-group-text bg-warning text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control border-warning" style="color:#7a7a7a">
+                            <button class="btn btn-warning text-white">Search</button>
+                        </div>
+                    </div>
+                    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+                        <form action="/Collection/AllProduct">
+                            <div class="ms-auto d-none d-lg-block">
+                                <div class="input-group">
+                                    <span class="border-warning input-group-text bg-warning text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input type="text" id="keywork" class="form-control border-warning position-relative" style="color:#7a7a7a" name="search" value="@ViewBag.search" autocomplete="off">
+                                    <div id="keywork2">
+
+                                    </div>
+
+                                    <button class="btn btn-warning text-white">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                        <ul class="navbar-nav ms-auto ">
+                            <li class="nav-item">
+                                @Html.ActionLink("Store", "AllProduct", new { Controller = "Collection" }, new { @class = "nav-link mx-2 text-uppercase active" })
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                @Html.ActionLink("Laptop", "Laptop", new { categoryid = 1, Controller = "Collection" }, new { @class = "nav-link dropdown-toggle" })
+                                <div class="dropdown-menu sm-menu">
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=1&categoryid=1">ACER</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=2&categoryid=1">ASUS</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=3&categoryid=1">MSI</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=4&categoryid=1">LENOVO</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=5&categoryid=1">DELL</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=6&categoryid=1">GIGABYTE</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=7&categoryid=1">HP</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                <a class="nav-link dropdown-toggle" href="/Collection/Laptop?categoryid=2" id="navbardrop">
+                                    PC
+                                </a>
+                                <div class="dropdown-menu sm-menu">
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=8&categoryid=2">GVN TITAN</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=9&categoryid=2">GVN PHANTOM</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=10&categoryid=2">GVN VIPER</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=11&categoryid=2">GVN MINION</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                <a class="nav-link dropdown-toggle" href="/Collection/Laptop?categoryid=3" id="navbardrop">
+                                    Màn hình
+                                </a>
+                                <div class="dropdown-menu sm-menu">
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=12&categoryid=3">LG</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=13&categoryid=3">Asus</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=14&categoryid=3">ViewSonic</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=15&categoryid=3">Dell</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=16&categoryid=3">Gigabyte</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=17&categoryid=3">Acer</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=18&categoryid=3">MSI</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=19&categoryid=3">Lenovo</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=20&categoryid=3">Samsung</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=21&categoryid=3">LC-Power</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                <a class="nav-link dropdown-toggle" href="/Collection/Laptop?categoryid=4" id="navbardrop">
+                                    Bàn phím
+                                </a>
+                                <div class="dropdown-menu sm-menu">
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=22&categoryid=4">Akko</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=23&categoryid=4">Logitech</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=24&categoryid=4">Asus</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=25&categoryid=4">Razer</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=26&categoryid=4">Corsair</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=27&categoryid=4">Vortex</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=28&categoryid=4">Mikit</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                <a class="nav-link dropdown-toggle" href="/Collection/Laptop?categoryid=5" id="navbardrop">
+                                    Chuột
+                                </a>
+                                <div class="dropdown-menu sm-menu">
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=29&categoryid=5">Logitech</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=30&categoryid=5">Razer</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=31&categoryid=5">Asus</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=32&categoryid=5">Corsair</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=33&categoryid=5">Steelseries</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=34&categoryid=5">HyperX</a>
+                                    <a class="dropdown-item" href="/Collection/BrandLaptop?brandid=35&categoryid=5">Zowie</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto ">
+                            <li class="nav-item shopping">
+                                <a class="nav-link mx-2 text-uppercase" href="/Cart/Index">
+                                    <i class="fa-solid fa-cart-shopping me-1"></i> Cart
+                                    @if (ViewData["Quantity"] != null)
+                                    {
+                                        <span class="quantity" id="data-container">@ViewData["Quantity"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="quantity" id="data-container">0</span>
+                                    }
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown dmenu">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="nav-link mx-2 text-uppercase dropdown-toggle" href="#"><i class="fa-solid fa-circle-user me-1"></i>@User.Identity.Name</a>
+                                        <div class="dropdown-menu sm-menu">
+                                            @Html.ActionLink("Admin Page", "Index", new { Controller = "Home", area = "Admin" }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Đăng xuất", "Logout", new { Controller = "Account" }, new { @class = "dropdown-item" })
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link mx-2 text-uppercase dropdown-toggle" href="#"><i class="fa-solid fa-circle-user me-1"></i>@User.Identity.Name</a>
+                                        <div class="dropdown-menu sm-menu">
+                                            @Html.ActionLink("Thông tin tài khoản", "MyProfile", new { Controller = "Account" }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Đăng xuất", "Logout", new { Controller = "Account" }, new { @class = "dropdown-item" })
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <a class="nav-link mx-2 text-uppercase dropdown-toggle" href="#"><i class="fa-solid fa-circle-user me-1"></i> Account</a>
+                                    <div class="dropdown-menu sm-menu">
+                                        @Html.ActionLink("Đăng Nhập", "Login", new { Controller = "Account" }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Đăng Ký", "Register", new { Controller = "Account" }, new { @class = "dropdown-item" })
+                                    </div>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="box-1">
+        @RenderBody()
+
+    </div>
+
+
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+    <div class="container-fluid p-0 mt-3">
+        <!-- Footer -->
+        <footer class="text-center text-lg-start text-dark"
+                style="background-color: #fff">
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+                <!-- Section: Links -->
+                <section class="">
+                    <!--Grid row-->
+                    <div class="row">
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                            <h6 class="text-uppercase mb-4 font-weight-bold">
+                                Về KGEAR
+                            </h6>
+                            <p>
+                                Giới thiệu
+                            </p>
+                            <p>
+                                Tuyển dụng
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <hr class="w-100 clearfix d-md-none" />
+
+                        <!-- Grid column -->
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                            <h6 class="text-uppercase mb-4 font-weight-bold">Chính sách</h6>
+                            <p>
+                                <a class="text-dark">Chính sách bảo hành</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Chính sách thanh toán</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Chính sách giao hàng</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Chính sách bảo mật</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <hr class="w-100 clearfix d-md-none" />
+
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                            <h6 class="text-uppercase mb-4 font-weight-bold">
+                                Useful links
+                            </h6>
+                            <p>
+                                <a class="text-dark">Your Account</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Become an Affiliate</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Shipping Rates</a>
+                            </p>
+                            <p>
+                                <a class="text-dark">Help</a>
+                            </p>
+                        </div>
+
+                        <!-- Grid column -->
+                        <hr class="w-100 clearfix d-md-none" />
+
+                        <!-- Grid column -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+                            <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
+                            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+                            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!--Grid row-->
+                </section>
+                <!-- Section: Links -->
+
+                <hr class="my-3">
+
+                <!-- Section: Copyright -->
+                <section class="p-3 pt-0">
+                    <div class="row d-flex align-items-center">
+                        <!-- Grid column -->
+                        <div class="col-md-7 col-lg-8 text-center text-md-start">
+                            <!-- Copyright -->
+                            <div class="p-3">
+                                Kết nối với chúng tôi:
+                                <a class="text-dark" href="#">KGEAR.com</a>
+                            </div>
+                            <!-- Copyright -->
+                        </div>
+                        <!-- Grid column -->
+                        <!-- Grid column -->
+                        <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                            <!-- Facebook -->
+                            <a class="btn btn-outline-light btn-floating m-1"
+                               class="text-white"
+                               role="button">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+
+                            <!-- Twitter -->
+                            <a class="btn btn-outline-light btn-floating m-1"
+                               class="text-white"
+                               role="button">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+
+                            <!-- Google -->
+                            <a class="btn btn-outline-light btn-floating m-1"
+                               class="text-white"
+                               role="button">
+                                <i class="fab fa-google"></i>
+                            </a>
+
+                            <!-- Instagram -->
+                            <a class="btn btn-outline-light btn-floating m-1"
+                               class="text-white"
+                               role="button">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                </section>
+                <!-- Section: Copyright -->
+            </div>
+            <!-- Grid container -->
+        </footer>
+        <!-- Footer -->
+    </div>
+    <!-- End of .container -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.navbar-light .dmenu').hover(function () {
+                $(this).find('.sm-menu').first().stop(true, true).slideDown(150);
+            }, function () {
+                $(this).find('.sm-menu').first().stop(true, true).slideUp(105)
+            });
+        });
+
+    </script>
+
+    <script>
+        $('#keywork').keyup(function () {
+            var searchField = $('#keywork').val();
+            var expression = RegExp(searchField, "i");
+
+            $('.box-searchauto').remove();
+            $.ajax({
+                type: "GET",
+                url: "/Home/Search",
+                success: function (reponsive) {
+                    var data = JSON.parse(reponsive);
+                    console.log(data);
+                    if (searchField != "") {
+                        var html_Body = `<div class="box-searchauto position-absolute top-100 start-0 shadow p-3 mb-5 bg-body-tertiary rounded" style="width: 400px">
+
+                                                            </div>`;
+                    } $('#keywork2').append(html_Body);
+                    $.each(data, function (key, item) {
+                        if (searchField != "" && item.ProductName.search(expression) != -1) {
+                            const formattedCart_Price = parseFloat(item.Price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            var html_Search = ` <a href="/Collection/Detail/${item.ProductID}">
+                                                            <div class="row d-flex align-items-center mb-3">
+                                                                <div class="col-2">
+                                                                    <img src="/Img/${item.Img}"
+                                                                         class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="text-black mb-0">${item.ProductName}</p>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <p class="card-text" style="color:red; font-size:16px; font-weight:700"> ${formattedCart_Price} </p>
+                                                                </div>
+                                                            </div>
+                                                        </a> `;
+                            $('.box-searchauto').append(html_Search);
+                        }
+                    })
+                }
+            })
+        })
+
+
+
+        //alerts
+
+        // Toast function
+        function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+            const main = document.getElementById("toast");
+            if (main) {
+                const toast = document.createElement("div");
+
+                // Auto remove toast
+                const autoRemoveId = setTimeout(function () {
+                    main.removeChild(toast);
+                }, duration + 1000);
+
+                // Remove toast when clicked
+                toast.onclick = function (e) {
+                    if (e.target.closest(".toast__close")) {
+                        main.removeChild(toast);
+                        clearTimeout(autoRemoveId);
+                    }
+                };
+
+                const icons = {
+                    success: "fas fa-check-circle",
+                    info: "fas fa-info-circle",
+                    warning: "fas fa-exclamation-circle",
+                    error: "fas fa-exclamation-circle"
+                };
+                const icon = icons[type];
+                const delay = (duration / 1000).toFixed(2);
+
+                toast.classList.add("toast", `toast--${type}`);
+                toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+                toast.innerHTML = `
+                            <div class="toast__icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="toast__body">
+                                <h3 class="toast__title">${title}</h3>
+                                <p class="toast__msg">${message}</p>
+                            </div>
+                            <div class="toast__close">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        `;
+                main.appendChild(toast);
+            }
+        }
+
+
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã đăng ký thành công tài khoản tại F8.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Vui lòng nhập đầy đủ thông tin!!!",
+                type: "error",
+                duration: 5000
+            });
+        }
+
+        function showSuccessToast2() {
+            toast({
+                title: "Thêm vào giỏ hàng thành công!",
+                message: "Bạn vui lòng vào giỏ hàng để kiểm tra",
+                type: "success",
+                duration: 5000
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+

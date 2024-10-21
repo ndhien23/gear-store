@@ -1,0 +1,91 @@
+﻿:root {
+    --main-color: #09E0FA;
+}
+
+body {
+    background-color: #ececec;
+    position: relative;
+    z-index: -999;
+}
+
+#neubar {
+    background: #fae8d2;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.4)
+}
+
+.nav-item .active {
+    border-radius: 6px;
+    background: linear-gradient(145deg, var(--main-color), var(--main-color));
+}
+
+#neubar .dropdown-menu a:hover {
+    color: #454545
+}
+
+#neubar .nav-item {
+    margin: auto 4px;
+}
+
+#neubar a {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+#neubar .dropdown-menu {
+    background: #545454
+}
+
+a.navbar-brand {
+    color: #454545
+}
+
+.border-warning {
+    border-color: var(--main-color) !important;
+}
+
+.btn-warning {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+    .btn-warning:hover {
+        background-color: #08FFF6;
+        border-color: #08FFF6;
+    }
+
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+    background-color: #08FFF6;
+    border-color: #08FFF6;
+}
+
+.bg-warning {
+    background-color: var(--main-color) !important;
+}
+
+.box-1 {
+    position: relative;
+    z-index: -10;
+}
+
+.box-2 {
+    position: sticky;
+    top: 0;
+}
+
+.inner {
+    overflow: hidden;
+}
+
+    .inner img {
+        transition: all 1.5s ease;
+    }
+
+    .inner:hover img {
+        transform: scale(1.1);
+    }
+
+
+/*
+    ================
+*/
+

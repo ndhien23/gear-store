@@ -1,0 +1,148 @@
+﻿@model KAMStoreNew.Models.Product
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="container mt-3">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Content</li>
+        </ol>
+    </nav>
+    <nav class="bg-white p-3" style="border-radius:5px;">
+
+        <!-- content -->
+        <form id="myForm" action="/Cart/CartAdd" method="post">
+            <input type="hidden" name="ProductID" value="@Model.ProductID" />
+            <input type="hidden" name="ProductName" value="@Model.ProductName" />
+            <input type="hidden" name="Price" value="@Model.Price" />
+            <input type="hidden" name="Img" value="@Model.Img" />
+            <section class="py-2">
+                <div class="container">
+                    <div class="row gx-5">
+                        <aside class="col-lg-5">
+                            <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                                <img style="max-width: 100%; max-height: 70vh; margin: auto;" class="rounded-4 fit" src="/Img/@Model.Img" />
+                            </div>
+
+                        </aside>
+                        <main class="col-lg-7">
+                            <div class="ps-lg-3">
+                                <h4 class="title text-dark">
+                                    @Model.ProductName
+                                </h4>
+                                <div class="d-flex flex-row my-3">
+                                    <div class="text-warning mb-1 me-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span class="ms-1">
+                                            4.5
+                                        </span>
+                                    </div>
+                                    <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
+                                    @if (Model.AvailabilityStatus == "InStock")
+                                    {
+                                        <span class="text-success ms-2">In stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger ms-2">Out of stock</span>
+                                    }
+                                </div>
+
+                                <div class="mb-3">
+                                    <p class="card-text" style="color:red; font-size:36px; font-weight:700">@Html.DisplayFor(row => row.Price)</p>
+                                </div>
+
+                                <div class="row">
+                                    <dd class="col-9"><i class="fa-solid fa-check"></i> Bảo hành chính hãng 12 tháng.</dd>
+                                    <dd class="col-9"><i class="fa-solid fa-check"></i> Hỗ trợ đổi mới trong 7 ngày.</dd>
+                                    <dd class="col-9"><i class="fa-solid fa-check"></i> Windows bản quyền tích hợp.</dd>
+                                    <dd class="col-9"><i class="fa-solid fa-check"></i> Miễn phí giao hàng toàn quốc.</dd>
+                                </div>
+
+                                <hr />
+
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    @if (Model.AvailabilityStatus == "InStock")
+                                    {
+                                        <button id="mysubmitButton" type="submit" class="btn btn-warning btn-lg shadow-0 text-white"> <i class="fa-solid fa-cart-shopping"></i><br />Thêm vào giỏ</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button id="mysubmitButton" type="submit" class="btn btn-lg shadow-0 disabled"> Hết hàng </button>
+                                    }
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+        <!-- content -->
+
+        <section class="bg-light border-top py-4">
+            <div class="container">
+                <div class="row gx-4">
+                    <div class="col-lg-8 mb-4">
+                        <div class="border rounded-2 px-3 py-2 bg-white">
+
+                            <div class="tab-content" id="ex1-content">
+                                <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
+
+                                    <table class="table border mt-3 mb-2">
+                                        <tr>
+                                            <th class="py-2">Display:</th>
+                                            <td class="py-2">13.3-inch LED-backlit display with IPS</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-2">Processor capacity:</th>
+                                            <td class="py-2">2.3GHz dual-core Intel Core i5</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-2">Camera quality:</th>
+                                            <td class="py-2">720p FaceTime HD camera</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-2">Memory</th>
+                                            <td class="py-2">8 GB RAM or 16 GB RAM</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-2">Graphics</th>
+                                            <td class="py-2">Intel Iris Plus Graphics 640</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!-- Pills content -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+    </nav>
+</div>
+
+
+<script>
+    var myData = '@ViewBag.S2';
+    var myData2 = '@ViewBag.data';
+
+    if (myData == "error" && myData2 == "cartadd") {
+        document.addEventListener("DOMContentLoaded", function () {
+            showSuccessToast2();
+        });
+    }
+</script>

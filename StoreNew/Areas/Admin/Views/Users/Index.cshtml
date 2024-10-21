@@ -1,0 +1,176 @@
+﻿@model List<KAMStoreNew.Identity.AppUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">User Delete</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure delete
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <a href="" id="deleteLink" class="btn btn-secondary">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-lg-down modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">User Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="" class="img-fluid rounded-start" alt="..." id="productImgSpan">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>User Name</th>
+                                        <td class="card-title"><span id="UserNameSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Full Name</th>
+                                        <td class="card-title"><span id="FullNameSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Birthday</th>
+                                        <td class="card-title"><span id="BirthdaySpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td class="card-title"><span id="AddressSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>City</th>
+                                        <td class="card-title"><span id="CitySpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td class="card-title"><span id="EmailSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Phone Number</th>
+                                        <td class="card-title"><span id="PhoneNumberSpan"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-end">
+    <a href="/Admin/Users/Create" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Create</a>
+</div>
+
+<table class="table align-items-center mb-0">
+    <thead>
+        <tr>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Name</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
+            <th class="text-secondary opacity-7"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0" style="max-width: 200px;">
+                    <h6 class="mb-0 text-sm">@item.UserName</h6>
+                </td>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0">
+                    @Html.DisplayFor(row => item.Email)
+                </td>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0">
+                    @Html.DisplayFor(row => item.Address)
+                </td>
+
+                <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-success">@item.City</span>
+                </td>
+
+                <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-danger">@item.PhoneNumber</span>
+                </td>
+                <td class="align-middle">
+                    <span class="text-secondary font-weight-bold text-xs btnViewProd" data-bs-toggle="modal" data-bs-target="#exampleModal" data-productid="@item.Id">
+                        Detail
+                    </span>
+                    <a href="/Admin/Users/Edit/@item.Id" class="text-secondary font-weight-bold text-xs">
+                        |
+                        Edit
+                    </a>
+                    <a class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-productid="@item.Id">
+                        |
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<script>
+    $(document).on('click', '.btnViewProd', (event) => {
+        const productid = $(event.target).attr('data-productid');
+        $.ajax({
+            type: 'GET',
+            url: `/api/users?id=${productid}`,
+            success: (response) => {
+                const imgElement = $('#productImgSpan');
+                imgElement.attr('src', `/Img/${response.Img}`);
+                $('#UserNameSpan').html(response.UserName);
+                $('#FullNameSpan').html(response.FullName);
+                const createdDate = new Date(response.Birthday);
+                const formattedDate = createdDate.toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+
+                });
+                $('#BirthdaySpan').html(formattedDate);
+                $('#AddressSpan').html(response.Address);
+                $('#CitySpan').html(response.City);
+                $('#EmailSpan').html(response.Email);
+                $('#PhoneNumberSpan').html(response.PhoneNumber);
+
+            },
+            error: (err) => { console.log(err); }
+        });
+    });
+
+    $(document).ready(function () {
+        // Bắt sự kiện khi nhấn vào liên kết mở modal
+        $("a[data-bs-target='#exampleModal2']").click(function () {
+            // Lấy giá trị của data-productid
+            var productID = $(this).data("productid");
+
+            // Cập nhật href của liên kết "Delete" trong modal
+            $("#deleteLink").attr("href", "/admin/users/delete/" + productID);
+        });
+    });
+</script>

@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="d-flex justify-content-end">
+    <button id="btnGetProduct" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Get API</button>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-lg-down modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Product Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="" class="img-fluid rounded-start" alt="..." id="productImgSpan">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <td class="card-title"><span id="productNameSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Price</th>
+                                        <td class="card-title"><span id="productPriceSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Created Date</th>
+                                        <td class="card-title"><span id="productCreatedDateSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Availability Status</th>
+                                        <td class="card-title"><span id="productAvailabilityStatusSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Category</th>
+                                        <td class="card-title"><span id="productCategorySpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Brand</th>
+                                        <td class="card-title"><span id="productBrandSpan"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table class="table align-items-center mb-0">
+    <thead>
+        <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                Product Name
+            </th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                Price
+            </th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                Created Date
+            </th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Availability Status</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Category</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Brand</th>
+            <th class="text-secondary opacity-7"></th>
+        </tr>
+    </thead>
+    <tbody id="SpanProducts">
+
+    </tbody>
+</table>
+
+<script>
+    $('#btnGetProduct').click(() => {
+        $('#SpanProducts').empty();
+        $.ajax({
+            type: 'GET',
+            url: `/api/products`,
+            success: (responses) => {
+
+                for (var i = 0; i <= responses.length; i++) {
+                    const productRow = responses[i];
+                    const formattedCart_Price = parseFloat(productRow.Price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    const createdDate = new Date(productRow.CreatedDate);
+                    const formattedDate = createdDate.toLocaleString('vi-VN', {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                    });
+                    const strHTML = '<tr>'+
+                                        '<td class="text-truncate" style="max-width: 200px;">'+
+                                            '<h6 class="mb-0 text-sm">' + productRow.ProductName + '</h6>'+
+                                        '</td>'+
+                                        '<td class="align-middle text-center text-xs font-weight-bold mb-0">'+
+                                            formattedCart_Price +
+                                        '</td>'+
+                                        '<td class="align-middle text-center text-xs font-weight-bold mb-0">'+
+                                            formattedDate +
+                                        '</td>'+
+                                        '<td class="align-middle text-center">'+
+                                            '<span class="text-secondary text-xs font-weight-bold">' + productRow.AvailabilityStatus+ '</span>'+
+                                        '</td>'+
+                                        '<td class="align-middle text-center">'+
+                                            '<span class="text-secondary text-xs font-weight-bold">' + productRow.Category.CategoryName + '</span>'+
+                                        '</td>'+
+                                        '<td class="align-middle text-center">'+
+                                            '<span class="text-secondary text-xs font-weight-bold">' + productRow.Brand.BrandName +'</span>'+
+                                        '</td>'+
+                                        '<td class="align-middle">'+
+                                            '<span class="text-secondary font-weight-bold text-xs btnViewProd" data-bs-toggle="modal" data-bs-target="#exampleModal" data-productid="' + productRow.ProductID + '">'+
+                                                'Detail'+
+                                            '</span>'+
+                                        '</td>'+
+                                    '</tr>'
+
+                    $('#SpanProducts').append(strHTML);
+                }
+            },
+            error: (err) => { console.log(err); }
+        });
+    });
+
+    $(document).on('click', '.btnViewProd', (event) => {
+        const productid = $(event.target).attr('data-productid');
+        $.ajax({
+            type: 'GET',
+            url: `/api/products?id=${productid}`,
+            success: (response) => {
+                $('#productNameSpan').html(response.ProductName);
+                const imgElement = $('#productImgSpan');
+                imgElement.attr('src', `/Img/${response.Img}`);
+                const formattedPrice = parseFloat(response.Price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                $('#productPriceSpan').html(formattedPrice);
+                const createdDate = new Date(response.CreatedDate);
+                const formattedDate = createdDate.toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric'
+                });
+                $('#productCreatedDateSpan').html(formattedDate);
+                $('#productAvailabilityStatusSpan').html(response.AvailabilityStatus);
+                $('#productCategorySpan').html(response.Category.CategoryName);
+                $('#productBrandSpan').html(response.Brand.BrandName);
+
+            },
+            error: (err) => { console.log(err); }
+        });
+    });
+</script>

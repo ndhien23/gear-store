@@ -1,0 +1,96 @@
+﻿@model List<KAMStoreNew.Models.Product>
+
+@{
+    ViewBag.Title = ViewBag.title;
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="container mt-3">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Content</li>
+        </ol>
+    </nav>
+    <nav class="bg-white p-3" style="border-radius:5px;">
+        <div class="mb-3 d-flex justify-content-end">
+            <label class="form-label mt-1">Sắp xếp theo</label>
+            @if (ViewBag.SortButton == "PhoBien")
+            {
+                <a class="btn btn-secondary ms-3" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid" role="button" style="background-color: #09E0FA;">Phổ Biến</a>
+            }
+            else
+            {
+                <a class="btn btn-secondary ms-3" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid" role="button">Phổ Biến</a>
+            }
+            @if (ViewBag.SortButton == "MoiNhat")
+            {
+                <a class="btn btn-secondary ms-3" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=MoiNhat" role="button" style="background-color: #09E0FA;">Mới Nhất</a>
+            }
+            else
+            {
+                <a class="btn btn-secondary ms-3" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=MoiNhat" role="button">Mới Nhất</a>
+            }
+
+            @if (ViewBag.SortButton == "Gia")
+            {
+                if (ViewBag.SortStyle == "TangDan")
+                {
+                    <div class="dropdown ms-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #09E0FA;">
+                            Giá Tăng Dần
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=TangDan">Tăng Dần</a></li>
+                            <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=GiamDan">Giảm Dần</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="dropdown ms-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #09E0FA;">
+                            Giá Giảm Dần
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=TangDan">Tăng Dần</a></li>
+                            <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=GiamDan">Giảm Dần</a></li>
+                        </ul>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="dropdown ms-3">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Giá
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=TangDan">Tăng Dần</a></li>
+                        <li><a class="dropdown-item" href="/Collection/BrandLaptop?brandid=@ViewBag.brandid&categoryid=@ViewBag.categoryid&SortButton=Gia&SortStyle=GiamDan">Giảm Dần</a></li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-3 mb-3">
+                    <div class="card shadow" style="width: 18rem;">
+                        <a href="/Collection/Detail/@item.ProductID">
+                            <div class="inner">
+                                <img src="/Img/@item.Img" class="card-img-top" alt="...">
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <a href="/Collection/Detail/@item.ProductID" class="card-title text-decoration-none"><h6>@item.ProductName</h6></a>
+                            <p class="card-text" style="color:red; font-size:18px; font-weight:700">@Html.DisplayFor(row => item.Price)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>

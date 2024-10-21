@@ -1,0 +1,161 @@
+﻿@model KAMStoreNew.ViewModel.RegisterVM
+@{
+    ViewBag.Title = "Create";
+}
+
+<style>
+
+    .ratings {
+        font-size: 30px;
+        font-weight: 600;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        color: #f9b43a
+    }
+
+    .user-details span {
+        text-align: left
+    }
+
+    .inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px
+    }
+
+    .inputs input {
+        font-size: 14px;
+        height: 40px;
+        border: 2px solid #ced4da;
+        padding-left: 10px;
+    }
+
+    .inputs select {
+        font-size: 14px;
+        height: 40px;
+        border: 2px solid #ced4da;
+        padding-left: 10px;
+    }
+
+    .inputs input:focus {
+        box-shadow: none;
+        border: 2px solid #09E0FA;
+    }
+
+    .inputs select:focus {
+        box-shadow: none;
+        border: 2px solid #09E0FA;
+    }
+
+    .about-inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px
+    }
+
+    .about-inputs textarea {
+        font-size: 14px;
+        height: 100px;
+        border: 2px solid #ced4da;
+        resize: none
+    }
+
+        .about-inputs textarea:focus {
+            box-shadow: none
+        }
+
+    .btn {
+        font-weight: 600
+    }
+
+        .btn:focus {
+            box-shadow: none
+        }
+</style>
+
+<div class="container mt-3">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                    <div class="row justify-content-center">
+                        <p class="text-center h1 fw-bold  mx-1 mx-md-4">Create User</p>
+
+                        <form action="/Admin/Users/Create" method="post">
+                            <div class="row">
+                                <div class="col-md-12 mb-1">
+                                    <div class="inputs">
+                                        <label>Full Name</label>
+                                        @Html.TextBoxFor(temp => temp.Fullname, new { placeholder = "Full Name", @class = "form-control" })
+                                        @Html.ValidationMessageFor(temp => temp.Fullname)
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-1">
+                                    <div class="inputs">
+                                        <label>Email</label>
+                                        @Html.TextBoxFor(temp => temp.Email, new { placeholder = "Your Email", @class = "form-control" })
+                                        @Html.ValidationMessageFor(temp => temp.Email)
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-1">
+                                    <div class="inputs">
+                                        <label>User Name</label>
+                                        @Html.TextBoxFor(temp => temp.Username, new { placeholder = "User Name", @class = "form-control" })
+                                        @Html.ValidationMessageFor(temp => temp.Username)
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Password</label>
+                                        @Html.PasswordFor(temp => temp.Password, new { placeholder = "Password", @class = "form-control" })
+                                        @Html.ValidationMessageFor(temp => temp.Password)
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="inputs">
+                                        <label>Confirm Password</label>
+                                        @Html.PasswordFor(temp => temp.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control" })
+                                        @Html.ValidationMessageFor(temp => temp.ConfirmPassword)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 gap-2 d-flex justify-content-end"> <button type="submit" class="px-3 btn btn-sm btn-secondary">Create</button> </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //====================================================
+    const fileInput = document.getElementById("formFile");
+    const avatarImage = document.getElementById("avatarImage");
+
+    fileInput.addEventListener("change", function () {
+        // Lấy tệp tin đã chọn
+        const selectedFile = fileInput.files[0];
+
+        // Kiểm tra xem đã chọn tệp tin chưa
+        if (selectedFile) {
+            // Tạo đường dẫn dựa trên tên tệp tin
+            const filePath = URL.createObjectURL(selectedFile);
+
+            // Đặt đường dẫn vào thuộc tính src của thẻ img
+            avatarImage.src = filePath;
+        } else {
+            // Nếu không có tệp tin được chọn, có thể đặt một ảnh mặc định
+            avatarImage.src = "/Img/avatar.jpg";
+        }
+    });
+</script>

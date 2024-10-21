@@ -1,0 +1,217 @@
+﻿@model List<KAMStoreNew.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">User Delete</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure delete
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <a href="" id="deleteLink" class="btn btn-secondary">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-lg-down modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">User Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>Order Id</th>
+                                        <td class="card-title"><span id="IdSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Full Name</th>
+                                        <td class="card-title"><span id="FullNameSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Order Date</th>
+                                        <td class="card-title"><span id="OrderDateSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>City</th>
+                                        <td class="card-title"><span id="CitySpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>District</th>
+                                        <td class="card-title"><span id="DistrictSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ward</th>
+                                        <td class="card-title"><span id="WardSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td class="card-title"><span id="AddressSpan"></span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Phone Number</th>
+                                        <td class="card-title"><span id="PhoneNumberSpan"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Products</th>
+                                        <td class="" id="SpanProducts">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td class="card-title"><span id="TotalSpan"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table class="table align-items-center mb-0">
+    <thead>
+        <tr>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Order Id</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Full Name</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Order Date</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total</th>
+            <th class="text-secondary opacity-7"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0" style="max-width: 200px;">
+                    <h6 class="mb-0 text-sm">@item.Id</h6>
+                </td>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0">
+                    <h6 class="mb-0 text-sm">@item.InformationUser.FullName</h6>
+                </td>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0">
+                    <h6 class="mb-0 text-sm">@Html.DisplayFor(row => item.OrderDate)</h6>
+                </td>
+                <td class="align-middle text-center text-xs font-weight-bold mb-0">
+                    <h6 class="mb-0 text-sm">@item.InformationUser.City</h6>
+                </td>
+                <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-danger">@item.InformationUser.PhoneNumber</span>
+                </td>
+                <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-success">@Html.DisplayFor(row => item.Total)</span>
+                </td>
+
+                <td class="align-middle">
+                    <span class="text-secondary font-weight-bold text-xs btnViewProd" data-bs-toggle="modal" data-bs-target="#exampleModal" data-productid="@item.Id">
+                        Detail
+                    </span>
+                    <a class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-productid="@item.Id">
+                        |
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<script>
+    $(document).on('click', '.btnViewProd', (event) => {
+        const productid = $(event.target).attr('data-productid');
+        $.ajax({
+            type: 'GET',
+            url: `/api/orders?id=${productid}`,
+            success: (response) => {
+                $('#IdSpan').html(response.Id);
+                $('#FullNameSpan').html(response.InformationUser.FullName);
+                const createdDate = new Date(response.OrderDate);
+                const formattedDate = createdDate.toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric'
+
+                });
+                $('#OrderDateSpan').html(formattedDate);
+                $('#AddressSpan').html(response.InformationUser.Address);
+                $('#CitySpan').html(response.InformationUser.City);
+                $('#PhoneNumberSpan').html(response.InformationUser.PhoneNumber);
+                $('#DistrictSpan').html(response.InformationUser.District);
+                $('#WardSpan').html(response.InformationUser.Ward);
+                $('#SpanProducts').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/carts?id=${response.OrderId}`,
+                    success: (responses) => {
+                        
+                        for (var i = 0; i <= responses.length; i++) {
+                            const cartRow = responses[i];
+                            const formattedCart_Price = parseFloat(cartRow.Cart_Price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            const strHTML = ' <div class="row d-flex align-items-center">'+
+                                                          ' <div class="col-md-1 col-lg-1 col-xl-1">'+
+                                                               ' <img src="/Img/' + cartRow.Cart_Img +'"'+
+                                                                     'class="img-fluid rounded-3" alt="Cotton T-shirt"> </div>'+
+                                                            '<div class="col-md-3 col-lg-3 col-xl-8">'+
+                                                                '<h6 class="text-black mb-0">'+ cartRow.Cart_Name +'</h6>'+
+                                                            '</div>'+
+                                                            '<div class="col-md-3 col-lg-2 col-xl-2 ">'+
+                                '<p class="card-text" style="color:red; font-size:16px; font-weight:700">' + formattedCart_Price +'</p>'+
+                                                            '</div>'+
+                                                            '<div class="col-md-3 col-lg-3 col-xl-1">'+
+                                                                '<h6 class="text-black mb-0">x'+ cartRow.Quantity+'</h6>'+
+                                                            '</div>'+
+                                            '</div>';
+                            $('#SpanProducts').append(strHTML);
+                        }
+                    },
+                    error: (err) => { console.log(err); }
+                });
+
+
+                const formattedPrice = parseFloat(response.Total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                $('#TotalSpan').html(formattedPrice);
+
+            },
+            error: (err) => { console.log(err); }
+        });
+    });
+
+    $(document).ready(function () {
+        // Bắt sự kiện khi nhấn vào liên kết mở modal
+        $("a[data-bs-target='#exampleModal2']").click(function () {
+            // Lấy giá trị của data-productid
+            var productID = $(this).data("productid");
+
+            // Cập nhật href của liên kết "Delete" trong modal
+            $("#deleteLink").attr("href", "/admin/order/delete/" + productID);
+        });
+    });
+</script>
